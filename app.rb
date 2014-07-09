@@ -11,4 +11,8 @@ class App < Sinatra::Application
   get "/" do
     erb :home
   end
+
+  get "/users/new" do
+    erb :new_user
+  end
 end
