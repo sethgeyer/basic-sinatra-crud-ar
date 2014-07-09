@@ -8,10 +8,7 @@ feature "registration page" do
   end
 
   scenario "visitor fills in form to create an account" do
-    visit '/users/new'
-    fill_in "Username", with: "Seth"
-    fill_in "Password", with: "seth"
-    click_on "Submit"
+    fill_in_registration_form_and_submit
     # expect(page).to have_content("Thank you for registering")
     expect(page).to have_content("Thank you for registering.")
 

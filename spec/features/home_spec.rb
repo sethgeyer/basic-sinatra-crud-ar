@@ -22,19 +22,19 @@ feature "homepage" do
   end
 
   scenario "visitor fills in login credentials and logs in" do
-    visit '/users/new'
-    fill_in "Username", with: "Seth"
-    fill_in "Password", with: "seth"
-    click_on "Submit"
-    fill_in "Username", with: "Seth"
-    fill_in "Password", with: "seth"
-    click_on "Submit"
+    fill_in_registration_form_and_submit
+    user_logs_in
     expect(page).to have_content("Welcome Seth!")
     expect(page).to have_content("Logout")
     expect(page).not_to have_link("Login")
     expect(page).not_to have_link("Register")
+  end
 
-
+  scenario "user logs out" do
+    fill_in_registration_form_and_submit
+    user_logs_in
+    click_on "Logout"
+    expect(page).to have_link("Register")
   end
 
 end
