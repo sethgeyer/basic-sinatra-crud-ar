@@ -23,7 +23,7 @@ class App < Sinatra::Application
     name = params[:username]
     word = params[:password]
     if @database_connection.sql("INSERT INTO users (username, password) VALUES ('#{name}', '#{word}')")
-      puts "Username is #{name}, Password is #{word}"
+      # puts "Username is #{name}, Password is #{word}"
       flash[:notice] = "Thank you for registering."
     end
     redirect "/"
@@ -33,9 +33,14 @@ class App < Sinatra::Application
     name = params[:username]
     word = params[:password]
     current_user = @database_connection.sql("SELECT * FROM users WHERE username= '#{name}'").first
-    p current_user
-    session[:user_id] = current_user[:id]
+    #p current_user
+    session[:user_id] = current_user['id']
     flash[:notice] = "Welcome #{current_user["username"]}!"
+    redirect "/"
+  end
+
+  get '/logout' do
+    session.delete(:user_id)
     redirect "/"
   end
 

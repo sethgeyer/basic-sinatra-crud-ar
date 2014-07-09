@@ -1,13 +1,19 @@
 
+<%= "ID=#{session[:user_id]}"%><br>
 
 
-<a href="/users/new">Register</a>
-<br>
-<h4>Login</h4>
-<form method="POST" action="/login">
-  <label for="username">Username:</label><br>
-  <input id="username" name="username"><br><br>
-  <label for="password">Password:</label><br>
-  <input id="password" name="password"><br><br>
-  <button>Submit</button>
-</form>
+<% if session[:user_id] %>
+  <a href="/logout">Logout</a>
+<% else %>
+  <a href="/users/new">Register</a>
+  <br>
+  <h4>Login</h4>
+  <form method="POST" action="/login">
+    <label for="username">Username:</label><br>
+    <input id="username" name="username"><br><br>
+    <label for="password">Password:</label><br>
+    <input id="password" name="password"><br><br>
+    <button>Submit</button>
+  </form>
+
+<% end %>
