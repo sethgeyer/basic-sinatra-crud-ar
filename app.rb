@@ -20,8 +20,23 @@ class App < Sinatra::Application
   end
 
   post "/users" do
-    flash[:notice] = "Thank you for registering."
-    redirect "/"#,
+    name = params[:username]
+    word = params[:password]
+    if @database_connection.sql("INSERT INTO users (username, password) VALUES ('#{name}', '#{word}')")
+      puts "Username is #{name}, Password is #{word}"
+      flash[:notice] = "Thank you for registering."
+    end
+    redirect "/"
+  end
+
+  post "/login" do
+    name = params[:username]
+    word = params[:password]
+    current_user = @database_connection.sql("SELECT * FROM users WHERE username= '#{name}'").first
+    p current_user
+    session[:user_id] = current_user[:id]
+    flash[:notice] = "Welcome #{current_user["username"]}!"
+    redirect "/"
   end
 
 end
