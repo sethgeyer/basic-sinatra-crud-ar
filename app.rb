@@ -22,11 +22,22 @@ class App < Sinatra::Application
   post "/users" do
     name = params[:username]
     word = params[:password]
-    if @database_connection.sql("INSERT INTO users (username, password) VALUES ('#{name}', '#{word}')")
-      # puts "Username is #{name}, Password is #{word}"
-      flash[:notice] = "Thank you for registering."
+
+    if params.values.include? ""
+      flash[:notice] = if name == "" && word == ""
+                        "Password and Username is required"
+                       elsif name == ""
+                        "Username is required"
+                       elsif word == ""
+                        "Password is required"
+                       end
+      redirect '/users/new'
+    else
+      if @database_connection.sql("INSERT INTO users (username, password) VALUES ('#{name}', '#{word}')")
+        flash[:notice] = "Thank you for registering."
+      end
+      redirect "/"
     end
-    redirect "/"
   end
 
   post "/login" do
