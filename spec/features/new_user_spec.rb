@@ -41,10 +41,7 @@ feature "registration page" do
 
   scenario "a registering visitor selects a username that has already been taken" do
     fill_in_registration_form_and_submit
-    user_logs_in
-    click_on "Logout"
     fill_in_registration_form_and_submit
-    #save_and_open_page
     expect(page).to have_content("Username is already taken")
   #   expect(page).to have_content("Register Here")
   #   expect(page).to have_content("Username is already taken")
