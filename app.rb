@@ -13,8 +13,9 @@ class App < Sinatra::Application
 
   get "/" do
     all_users = @database_connection.sql("SELECT * FROM users WHERE id != #{session[:user_id].to_i}")
-    # all_users.sort
-    erb :home, locals: {all_users: all_users}
+    all_fish = @database_connection.sql("SELECT * FROM fishes")
+
+    erb :home, locals: {all_users: all_users, all_fish: all_fish}
   end
 
   get "/order/:order" do
@@ -26,7 +27,8 @@ class App < Sinatra::Application
       redirect "/"
     end
     all_users = @database_connection.sql("SELECT * FROM users WHERE id != #{session[:user_id].to_i} ORDER BY username #{order}")
-    erb :home, locals: {all_users: all_users}
+    all_fish = @database_connection.sql("SELECT * FROM fishes")
+    erb :home, locals: {all_users: all_users, all_fish: all_fish}
   end
 
   get "/users/new" do
@@ -46,9 +48,6 @@ class App < Sinatra::Application
                         "Password is required"
                        end
       redirect '/users/new'
-    # elsif @database_connection.sql("SELECT * FROM users WHERE username='#{name}'") != []
-    #    flash[:notice] = "Username is already taken"
-    #    redirect '/users/new'
     else
       begin
         @database_connection.sql("INSERT INTO users (username, password) VALUES ('#{name}', '#{word}')")
@@ -60,6 +59,19 @@ class App < Sinatra::Application
       end
 
     end
+  end
+
+
+  get "/add_fish" do
+    erb :new_fish
+  end
+
+  post "/add_fish" do
+    name = params[:name]
+    url = params[:url]
+    @database_connection.sql("INSERT INTO fishes (name, url) VALUES ('#{name}', '#{url}')")
+
+    redirect "/"
   end
 
   get "/delete/:name" do

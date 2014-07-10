@@ -11,6 +11,14 @@
   <% all_users.each do |user| %>
     <a href="/delete/<%= user["username"] %>"><%= user["username"] %></a><br>
   <% end %>
+  <hr>
+  <h3> Fish </h3>
+  <a href="/add_fish">Add Fish</a><br>
+  <% all_fish.each do |fish| %>
+    <a href="<%= fish["url"] %>"><%= fish["name"] %></a><br>
+  <% end %>
+
+
 
 <% else %>
   <a href="/users/new">Register</a>

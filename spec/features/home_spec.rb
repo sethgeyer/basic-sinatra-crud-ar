@@ -69,4 +69,24 @@ feature "homepage" do
     expect(page).not_to have_content("Adam")
   end
 
+  scenario "logged in user can see a fish header and a link to add fish" do
+    fill_in_registration_form_and_submit("Seth")
+    expect(page).not_to have_content("Fish")
+    user_logs_in
+    expect(page).to have_content("Fish")
+    expect(page).to have_link("Add Fish")
+  end
+
+  scenario "logged in user can add a fish" do
+    fill_in_registration_form_and_submit("Seth")
+    user_logs_in
+    click_on "Fish"
+    fill_in "Name", with: "Mackerel"
+    fill_in "URL", with: "http://en.wikipedia.org/wiki/Mackerel"
+    click_on "Submit"
+    expect(page).to have_link("Mackerel")
+    click_link "Mackerel"
+    expect(page).to have_content("Mackerel typically have vertical stripes on their backs and deeply forked tails.")
+  end
+
 end
