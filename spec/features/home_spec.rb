@@ -60,4 +60,13 @@ feature "homepage" do
     expect(page).to have_content("Stu\nBen\nAbe")
   end
 
+  scenario "logged in user can delete other users" do
+    fill_in_registration_form_and_submit("Seth")
+    fill_in_registration_form_and_submit("Adam")
+    user_logs_in
+    expect(page).to have_content("Adam")
+    click_on "Adam"
+    expect(page).not_to have_content("Adam")
+  end
+
 end

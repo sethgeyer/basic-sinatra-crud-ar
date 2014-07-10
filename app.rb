@@ -62,6 +62,12 @@ class App < Sinatra::Application
     end
   end
 
+  get "/delete/:name" do
+    name = params[:name]
+    @database_connection.sql("DELETE FROM users WHERE username='#{name}'")
+    redirect "/"
+  end
+
   post "/login" do
     name = params[:username]
     word = params[:password]

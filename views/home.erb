@@ -9,7 +9,7 @@
   <a href="/order/descending">DESC</a>
   <hr />
   <% all_users.each do |user| %>
-    <%= user["username"] %><br>
+    <a href="/delete/<%= user["username"] %>"><%= user["username"] %></a><br>
   <% end %>
 
 <% else %>
