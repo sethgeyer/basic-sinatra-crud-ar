@@ -39,11 +39,13 @@ feature "homepage" do
     expect(page).to have_link("Register")
   end
 
-  scenario "user logs in and sees other users" do
+  scenario "user logs in and sees other users ONLY" do
     fill_in_registration_form_and_submit
     fill_in_registration_form_for_another_dude
     user_logs_in
     expect(page).to have_content("Stu")
+    visit "/"
+    expect(page).not_to have_content("Seth")
   end
 
 end

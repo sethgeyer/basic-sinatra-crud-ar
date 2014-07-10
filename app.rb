@@ -12,7 +12,7 @@ class App < Sinatra::Application
   end
 
   get "/" do
-    all_users = @database_connection.sql("SELECT * FROM users")
+    all_users = @database_connection.sql("SELECT * FROM users WHERE id != #{session[:user_id].to_i}")
     erb :home, locals: {all_users: all_users}
   end
 
