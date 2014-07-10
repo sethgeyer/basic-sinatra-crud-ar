@@ -13,6 +13,19 @@ class App < Sinatra::Application
 
   get "/" do
     all_users = @database_connection.sql("SELECT * FROM users WHERE id != #{session[:user_id].to_i}")
+    # all_users.sort
+    erb :home, locals: {all_users: all_users}
+  end
+
+  get "/order/:order" do
+    if params[:order] == "ascending"
+      order = "ASC"
+    elsif params[:order] == "descending"
+      order = "DESC"
+    else
+      redirect "/"
+    end
+    all_users = @database_connection.sql("SELECT * FROM users WHERE id != #{session[:user_id].to_i} ORDER BY username #{order}")
     erb :home, locals: {all_users: all_users}
   end
 
@@ -37,14 +50,14 @@ class App < Sinatra::Application
     #    flash[:notice] = "Username is already taken"
     #    redirect '/users/new'
     else
-      #begin
+      begin
         @database_connection.sql("INSERT INTO users (username, password) VALUES ('#{name}', '#{word}')")
         flash[:notice] = "Thank you for registering."
         redirect "/"
-      # rescue
-      #   flash[:notice] = "Username is already taken"
-      #   redirect '/users/new'
-      #end
+      rescue
+        flash[:notice] = "Username is already taken"
+        redirect '/users/new'
+      end
 
     end
   end

@@ -48,4 +48,16 @@ feature "homepage" do
     expect(page).not_to have_content("Seth")
   end
 
+  scenario "user can display users in acending or decending order" do
+    fill_in_registration_form_and_submit("Ben")
+    fill_in_registration_form_and_submit("Seth")
+    fill_in_registration_form_and_submit("Stu")
+    fill_in_registration_form_and_submit("Abe")
+    user_logs_in
+    click_on "ASC"
+    expect(page).to have_content("Abe\nBen\nStu")
+    click_on "DESC"
+    expect(page).to have_content("Stu\nBen\nAbe")
+  end
+
 end

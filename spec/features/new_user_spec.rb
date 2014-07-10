@@ -43,9 +43,6 @@ feature "registration page" do
     fill_in_registration_form_and_submit("Seth")
     fill_in_registration_form_and_submit("Seth")
     expect(page).to have_content("Username is already taken")
-  #   expect(page).to have_content("Register Here")
-  #   expect(page).to have_content("Username is already taken")
-  #
   end
 
 

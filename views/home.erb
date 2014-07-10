@@ -2,9 +2,14 @@
 
 
 <% if session[:user_id] %>
-  <a href="/logout">Logout</a>
+  <a href="/logout">Logout</a><br>
+
+  <h3> List of Users</h3>
+  <a href="/order/ascending">ASC</a>
+  <a href="/order/descending">DESC</a>
+  <hr />
   <% all_users.each do |user| %>
-    <%= user["username"] %>
+    <%= user["username"] %><br>
   <% end %>
 
 <% else %>
