@@ -4,6 +4,10 @@ feature "homepage" do
     visit "/"
   end
 
+  after(:each) do
+    clear_test_dbase
+  end
+
   scenario "visitor sees a registration button" do
     expect(page).to have_link("Register")
   end
@@ -23,6 +27,7 @@ feature "homepage" do
 
   scenario "visitor fills in login credentials and logs in" do
     fill_in_registration_form_and_submit
+    #save_and_open_page
     user_logs_in
     expect(page).to have_content("Welcome Seth!")
     expect(page).to have_content("Logout")
@@ -32,6 +37,7 @@ feature "homepage" do
 
   scenario "user logs out" do
     fill_in_registration_form_and_submit
+    #save_and_open_page
     user_logs_in
     click_on "Logout"
     expect(page).to have_link("Register")

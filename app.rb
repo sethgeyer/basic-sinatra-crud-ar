@@ -32,11 +32,19 @@ class App < Sinatra::Application
                         "Password is required"
                        end
       redirect '/users/new'
+    # elsif @database_connection.sql("SELECT * FROM users WHERE username='#{name}'") != []
+    #    flash[:notice] = "Username is already taken"
+    #    redirect '/users/new'
     else
-      if @database_connection.sql("INSERT INTO users (username, password) VALUES ('#{name}', '#{word}')")
+      #begin
+        @database_connection.sql("INSERT INTO users (username, password) VALUES ('#{name}', '#{word}')")
         flash[:notice] = "Thank you for registering."
-      end
-      redirect "/"
+        redirect "/"
+      # rescue
+      #   flash[:notice] = "Username is already taken"
+      #   redirect '/users/new'
+      #end
+
     end
   end
 
