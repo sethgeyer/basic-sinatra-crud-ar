@@ -23,7 +23,7 @@ feature "homepage" do
   end
 
   scenario "visitor fills in login credentials and logs in" do
-    fill_in_registration_form_and_submit
+    fill_in_registration_form_and_submit("Seth")
     user_logs_in
     expect(page).to have_content("Welcome Seth!")
     expect(page).to have_content("Logout")
@@ -32,7 +32,7 @@ feature "homepage" do
   end
 
   scenario "user logs out" do
-    fill_in_registration_form_and_submit
+    fill_in_registration_form_and_submit("Seth")
     #save_and_open_page
     user_logs_in
     click_on "Logout"
@@ -40,8 +40,8 @@ feature "homepage" do
   end
 
   scenario "user logs in and sees other users ONLY" do
-    fill_in_registration_form_and_submit
-    fill_in_registration_form_for_another_dude
+    fill_in_registration_form_and_submit("Seth")
+    fill_in_registration_form_and_submit("Stu")
     user_logs_in
     expect(page).to have_content("Stu")
     visit "/"

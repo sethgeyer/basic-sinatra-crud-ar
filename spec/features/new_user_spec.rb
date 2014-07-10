@@ -9,7 +9,7 @@ feature "registration page" do
   end
 
   scenario "visitor fills in form to create an account" do
-    fill_in_registration_form_and_submit
+    fill_in_registration_form_and_submit("Seth")
     #save_and_open_page
   #   # expect(page).to have_content("Thank you for registering")
     expect(page).to have_content("Thank you for registering.")
@@ -40,8 +40,8 @@ feature "registration page" do
   end
 
   scenario "a registering visitor selects a username that has already been taken" do
-    fill_in_registration_form_and_submit
-    fill_in_registration_form_and_submit
+    fill_in_registration_form_and_submit("Seth")
+    fill_in_registration_form_and_submit("Seth")
     expect(page).to have_content("Username is already taken")
   #   expect(page).to have_content("Register Here")
   #   expect(page).to have_content("Username is already taken")

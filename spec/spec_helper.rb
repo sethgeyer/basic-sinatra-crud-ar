@@ -17,19 +17,14 @@ RSpec.configure do |config|
 end
 
 
-def fill_in_registration_form_and_submit
+def fill_in_registration_form_and_submit(name)
   visit '/users/new'
-  fill_in "Username", with: "Seth"
-  fill_in "Password", with: "seth"
+  fill_in "Username", with: "#{name}"
+  fill_in "Password", with: "#{name.downcase}"
   click_on "Submit"
 end
 
-def fill_in_registration_form_for_another_dude
-  visit '/users/new'
-  fill_in "Username", with: "Stu"
-  fill_in "Password", with: "stu"
-  click_on "Submit"
-end
+
 
 
 def user_logs_in
