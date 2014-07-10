@@ -39,4 +39,11 @@ feature "homepage" do
     expect(page).to have_link("Register")
   end
 
+  scenario "user logs in and sees other users" do
+    fill_in_registration_form_and_submit
+    fill_in_registration_form_for_another_dude
+    user_logs_in
+    expect(page).to have_content("Stu")
+  end
+
 end

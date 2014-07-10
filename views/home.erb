@@ -3,6 +3,10 @@
 
 <% if session[:user_id] %>
   <a href="/logout">Logout</a>
+  <% all_users.each do |user| %>
+    <%= user["username"] %>
+  <% end %>
+
 <% else %>
   <a href="/users/new">Register</a>
   <br>
