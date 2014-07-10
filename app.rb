@@ -8,7 +8,7 @@ class App < Sinatra::Application
   use Rack::Flash
   def initialize
     super
-    @database_connection = DatabaseConnection.new(ENV["RACK_ENV"])
+    @database_connection = DatabaseConnection.establish(ENV["RACK_ENV"])
   end
 
   get "/" do

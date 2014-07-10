@@ -4,6 +4,18 @@ ENV["RACK_ENV"] = "test"
 
 Capybara.app = App
 
+database_connection = DatabaseConnection.establish(ENV["RACK_ENV"])
+
+RSpec.configure do |config|
+  config.before do
+    database_connection.sql("BEGIN")
+  end
+
+  config.after do
+    database_connection.sql("ROLLBACK")
+  end
+end
+
 
 def fill_in_registration_form_and_submit
   visit '/users/new'
