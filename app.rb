@@ -13,7 +13,7 @@ class App < Sinatra::Application
 
   get "/" do
     all_users = @database_connection.sql("SELECT * FROM users WHERE id != #{session[:user_id].to_i}")
-    all_fish = @database_connection.sql("SELECT * FROM fishes")
+    all_fish = @database_connection.sql("SELECT * FROM fishes WHERE user_id=#{session[:user_id].to_i}")
 
     erb :home, locals: {all_users: all_users, all_fish: all_fish}
   end
@@ -27,7 +27,7 @@ class App < Sinatra::Application
       redirect "/"
     end
     all_users = @database_connection.sql("SELECT * FROM users WHERE id != #{session[:user_id].to_i} ORDER BY username #{order}")
-    all_fish = @database_connection.sql("SELECT * FROM fishes")
+    all_fish = @database_connection.sql("SELECT * FROM fishes  WHERE user_id=#{session[:user_id].to_i}")
     erb :home, locals: {all_users: all_users, all_fish: all_fish}
   end
 
@@ -69,7 +69,8 @@ class App < Sinatra::Application
   post "/add_fish" do
     name = params[:name]
     url = params[:url]
-    @database_connection.sql("INSERT INTO fishes (name, url) VALUES ('#{name}', '#{url}')")
+    user_id = session[:user_id].to_i
+    @database_connection.sql("INSERT INTO fishes (name, url, user_id) VALUES ('#{name}', '#{url}', #{user_id})")
 
     redirect "/"
   end

@@ -24,7 +24,7 @@ feature "homepage" do
 
   scenario "visitor fills in login credentials and logs in" do
     fill_in_registration_form_and_submit("Seth")
-    user_logs_in
+    user_logs_in("Seth")
     expect(page).to have_content("Welcome Seth!")
     expect(page).to have_content("Logout")
     expect(page).not_to have_link("Login")
@@ -34,7 +34,7 @@ feature "homepage" do
   scenario "user logs out" do
     fill_in_registration_form_and_submit("Seth")
     #save_and_open_page
-    user_logs_in
+    user_logs_in("Seth")
     click_on "Logout"
     expect(page).to have_link("Register")
   end
@@ -42,7 +42,7 @@ feature "homepage" do
   scenario "user logs in and sees other users ONLY" do
     fill_in_registration_form_and_submit("Seth")
     fill_in_registration_form_and_submit("Stu")
-    user_logs_in
+    user_logs_in("Seth")
     expect(page).to have_content("Stu")
     visit "/"
     expect(page).not_to have_content("Seth")
@@ -53,7 +53,7 @@ feature "homepage" do
     fill_in_registration_form_and_submit("Seth")
     fill_in_registration_form_and_submit("Stu")
     fill_in_registration_form_and_submit("Abe")
-    user_logs_in
+    user_logs_in("Seth")
     click_on "ASC"
     expect(page).to have_content("Abe\nBen\nStu")
     click_on "DESC"
@@ -63,7 +63,7 @@ feature "homepage" do
   scenario "logged in user can delete other users" do
     fill_in_registration_form_and_submit("Seth")
     fill_in_registration_form_and_submit("Adam")
-    user_logs_in
+    user_logs_in("Seth")
     expect(page).to have_content("Adam")
     click_on "Adam"
     expect(page).not_to have_content("Adam")
@@ -72,21 +72,35 @@ feature "homepage" do
   scenario "logged in user can see a fish header and a link to add fish" do
     fill_in_registration_form_and_submit("Seth")
     expect(page).not_to have_content("Fish")
-    user_logs_in
+    user_logs_in("Seth")
     expect(page).to have_content("Fish")
     expect(page).to have_link("Add Fish")
   end
 
   scenario "logged in user can add a fish" do
     fill_in_registration_form_and_submit("Seth")
-    user_logs_in
-    click_on "Fish"
-    fill_in "Name", with: "Mackerel"
-    fill_in "URL", with: "http://en.wikipedia.org/wiki/Mackerel"
-    click_on "Submit"
-    expect(page).to have_link("Mackerel")
-    click_link "Mackerel"
-    expect(page).to have_content("Mackerel typically have vertical stripes on their backs and deeply forked tails.")
+    user_logs_in("Seth")
+    create_a_fish("Sethfish")
+    expect(page).to have_link("Sethfish")
+    #click_link "Mackerel"
+    #expect(page).to have_content("Mackerel typically have vertical stripes on their backs and deeply forked tails.")
   end
+
+
+  scenario "logged in user can only see their fish" do
+    fill_in_registration_form_and_submit("Stan")
+    user_logs_in("Stan")
+    create_a_fish("Stanfish")
+    click_on "Logout"
+    fill_in_registration_form_and_submit("Seth")
+    user_logs_in("Seth")
+    create_a_fish("Sethfish")
+    expect(page).to have_link("Sethfish")
+    expect(page).not_to have_link("Stanfish")
+
+    #click_link "Mackerel"
+    #expect(page).to have_content("Mackerel typically have vertical stripes on their backs and deeply forked tails.")
+  end
+
 
 end
