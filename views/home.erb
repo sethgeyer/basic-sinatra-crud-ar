@@ -4,12 +4,27 @@
 <% if session[:user_id] %>
   <a href="/logout">Logout</a><br>
 
+  <%if flash[:other_fish]%>
+    <%fish_to_show = flash[:other_fish] %>
+    <%id = fish_to_show[0]["user_id"] %>
+  <%end%>
+
   <h3> List of Users</h3>
   <a href="/order/ascending">ASC</a>
   <a href="/order/descending">DESC</a>
   <hr />
   <% all_users.each do |user| %>
-    <a href="/delete/<%= user["username"] %>"><%= user["username"] %></a><br>
+    <a href="/fish/<%= user["username"] %>"><%= user["username"] %></a><br>
+
+      <% if id == user["id"] %>
+        <ul>
+          <%fish_to_show.each do |fish|%>
+            <a href="<%=fish['url']%>">
+              <li><%=fish["name"]%></li>
+            </a>
+          <%end%>
+        </ul>
+      <%end%>
   <% end %>
   <hr>
   <h3> Fish </h3>

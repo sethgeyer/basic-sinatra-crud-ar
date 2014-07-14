@@ -18,6 +18,15 @@ class App < Sinatra::Application
     erb :home, locals: {all_users: all_users, all_fish: all_fish}
   end
 
+  get "/fish/:user" do
+    user = params[:user]
+    id = @database_connection.sql("SELECT id FROM users WHERE username ='#{user}'").first["id"].to_i
+    other_fishes = @database_connection.sql("SELECT * FROM fishes WHERE user_id = #{id}")
+    flash[:other_fish] = other_fishes if other_fishes != []
+    redirect "/"#, other_fishes
+  end
+
+
   get "/order/:order" do
     if params[:order] == "ascending"
       order = "ASC"
@@ -60,6 +69,8 @@ class App < Sinatra::Application
 
     end
   end
+
+
 
 
   get "/add_fish" do

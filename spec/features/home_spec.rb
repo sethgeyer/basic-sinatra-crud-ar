@@ -61,6 +61,7 @@ feature "homepage" do
   end
 
   scenario "logged in user can delete other users" do
+    skip
     fill_in_registration_form_and_submit("Seth")
     fill_in_registration_form_and_submit("Adam")
     user_logs_in("Seth")
@@ -97,10 +98,18 @@ feature "homepage" do
     create_a_fish("Sethfish")
     expect(page).to have_link("Sethfish")
     expect(page).not_to have_link("Stanfish")
-
-    #click_link "Mackerel"
-    #expect(page).to have_content("Mackerel typically have vertical stripes on their backs and deeply forked tails.")
   end
 
+  scenario "logged in user can click on another user and see their fish" do
+    fill_in_registration_form_and_submit("Stan")
+    user_logs_in("Stan")
+    create_a_fish("Stanfish")
+    click_on "Logout"
+    fill_in_registration_form_and_submit("Seth")
+    user_logs_in("Seth")
+    create_a_fish("Sethfish")
+    click_on "Stan"
+    expect(page).to have_link("Stanfish")
+  end
 
 end
